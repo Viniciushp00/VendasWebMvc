@@ -12,6 +12,14 @@ namespace SalesWebMvc.Models
 
         public SalesRecord() { }
 
+        public SalesRecord(DateTime date, double amount, SaleStatus status, Seller seller)
+        {
+            Date = date;
+            Amount = amount;
+            Status = status;
+            Seller = seller;
+        }
+
         public SalesRecord(int id, DateTime date, double amount, SaleStatus status, Seller seller)
         {
             Id = id;

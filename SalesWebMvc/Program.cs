@@ -12,6 +12,9 @@ namespace SalesWebMvc
                 options.UseSqlServer(builder.Configuration.GetConnectionString("SalesWebMvcContext"), builder =>
                         builder.MigrationsAssembly("SalesWebMvc")));
 
+            //Registrando serviço para injeção de dependecia
+            builder.Services.AddScoped<SeedingService>();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -31,6 +34,9 @@ namespace SalesWebMvc
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //Populando a base de dados com o SeedingService
+            app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
 
             app.MapControllerRoute(
                 name: "default",
