@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.btn{
+    margin-top:20px;
+    border-radius: 20px;
+}
