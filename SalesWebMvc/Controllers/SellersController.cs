@@ -42,9 +42,10 @@ namespace SalesWebMvc.Controllers
             if (!ModelState.IsValid)
             {
                 var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Departments = departments };
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
+
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -117,7 +118,7 @@ namespace SalesWebMvc.Controllers
             if (!ModelState.IsValid)
             {
                 var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Departments = departments };
+                var viewModel = new SellerFormViewModel { Seller= seller, Departments = departments };
                 return View(viewModel);
             }
             if (id != seller.Id)
