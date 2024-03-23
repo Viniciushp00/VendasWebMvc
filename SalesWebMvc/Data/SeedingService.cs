@@ -1,5 +1,6 @@
 ﻿using SalesWebMvc.Models.Enums;
 using SalesWebMvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvc.Data
 {
@@ -12,11 +13,11 @@ namespace SalesWebMvc.Data
             _context= context;
         }
 
-        public void Seed()
+        public  void Seed()
         {
-            if(_context.Department.Any() ||
-               _context.Seller.Any() ||
-               _context.SalesRecord.Any())
+            if( _context.Department.Any() ||
+                _context.Seller.Any() ||
+                _context.SalesRecord.Any())
             {
                 return; //BD está populado
             }
