@@ -57,5 +57,11 @@ namespace SalesWebMvc.Services
             return resultfinal.GroupBy(x => x.Seller.Department).ToList();
         }
 
+        public async Task InsertAsync(SalesRecord sale)
+        {
+            await _context.AddAsync(sale);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

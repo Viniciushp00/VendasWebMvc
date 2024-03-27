@@ -1,0 +1,39 @@
+﻿@model SalesWebMvc.Models.ViewModels.SalesFormViewModel;
+@{
+    ViewData["Tittle"] = "New Sale";
+}
+<h2>@ViewData["Tittle"]</h2>
+<hr />
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <!--
+            <div asp-validation-summary="All" class="text-danger"></div>
+            -->
+            <div class="form-control">
+                <label asp-for="Sale.Date"></label>
+                <input asp-for="Sale.Date"/><br />
+                <span asp-validation-for="Sale.Date" class="text-danger"></span>
+            </div>
+            <div class="form-control">
+                <label asp-for="Sale.Amount"></label>
+                <input asp-for="Sale.Amount"/><br />
+                <span asp-validation-for="Sale.Amount" class="text-danger"></span>
+            </div>
+            <div class="form-control">
+                <label asp-for="Sale.SellerId"></label>
+                <select asp-for="Sale.SellerId" asp-items="@(new SelectList(Model.Sellers,"Id","Name"))" class="form-control form-select border-2" ></select>
+            </div>
+            <div>
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
