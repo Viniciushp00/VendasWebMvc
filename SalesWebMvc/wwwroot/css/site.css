@@ -21,3 +21,13 @@ body {
     margin-top:20px;
     border-radius: 20px;
 }
+
+.indexDivBorder{
+    padding: 10px;
+    border: solid 1px;
+    border-radius: 20px;
+}
+
+.indexTable{
+    margin:0 10px 0 10px
+}

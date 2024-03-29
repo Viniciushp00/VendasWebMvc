@@ -63,5 +63,42 @@ namespace SalesWebMvc.Services
             await _context.SaveChangesAsync();
         }
 
+        public KeyValuePair<Department, int> TopSaleDepartment(DateTime? minDate, DateTime? maxDate)
+        {
+            Dictionary<Department,int> saleForDepartment= new Dictionary<Department,int>();
+            var result =
+                from obj in _context.SalesRecord select obj;
+
+            if (minDate.HasValue)
+            {
+                result = result.Where(sale => sale.Date >= minDate);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(sale => sale.Date <= maxDate);
+            }
+
+            var resultToList = result
+                .Include(x => x.Seller)
+                .Include(x => x.Seller.Department)
+                .OrderByDescending(x => x.Date)
+                .ToList();
+
+            var resultFinal = resultToList.GroupBy(x => x.Seller.Department).ToList();
+
+            int sum = 0;
+            foreach (var department in resultFinal)
+            {
+                foreach (var item in department)
+                {
+                    sum++;
+                }
+                saleForDepartment.Add(department.Key, sum);
+            }
+
+
+            return saleForDepartment.OrderByDescending(x => x.Value).FirstOrDefault();
+        }
+
     }
 }

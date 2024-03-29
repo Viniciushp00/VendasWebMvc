@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
+using SalesWebMvc.Services;
 using System.Diagnostics;
 
 namespace SalesWebMvc.Controllers
@@ -7,17 +9,23 @@ namespace SalesWebMvc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SellerService _sellerService;
+        private readonly SalesRecordService _salesRecordService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SellerService sellerService, SalesRecordService salesRecordService)
         {
             _logger = logger;
+            _sellerService = sellerService;
+            _salesRecordService = salesRecordService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewData["Email"] = "viniciushp00@gmail.com";
+            int sellersCount = await _sellerService.CountAllAsync();
+            Department mostSaleDepartment = _salesRecordService.TopSaleDepartment(new DateTime(DateTime.Now.Year,DateTime.Now.Month,(DateTime.Now.Day - 7)),DateTime.Now).Key;
+            HomeViewModel viewModel = new HomeViewModel { SellersCount = sellersCount, DepartmentMostSale = mostSaleDepartment };
 
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

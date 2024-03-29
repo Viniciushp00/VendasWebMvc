@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SalesWebMvc.Models.ViewModels.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,4 +7,40 @@
     <h1 class="display-4">Welcome </h1>
     <h2>This is my first project using ASP .Net Core MVC</h2>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div class="indexDivBorder d-inline-flex">
+        <table class="indexTable">
+            <thead>
+                <tr>
+                    <th>
+                        Total Sellers
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Model.SellersCount.ToString()
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="indexTable">
+            <thead>
+                <tr>
+                    <th>
+                        Department with the most sales
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Model.DepartmentMostSale.Name
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+              
+    </div>
 </div>

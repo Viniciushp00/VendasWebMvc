@@ -62,5 +62,12 @@ namespace SalesWebMvc.Services
                 throw new DbConcurrencyException(ex.Message);
             }
         }
+
+        public async Task<int> CountAllAsync()
+        {
+            int seller = await _context.Seller.CountAsync();
+
+            return seller;
+        }
     }
 }
