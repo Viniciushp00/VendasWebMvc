@@ -86,9 +86,10 @@ namespace SalesWebMvc.Services
 
             var resultFinal = resultToList.GroupBy(x => x.Seller.Department).ToList();
 
-            int sum = 0;
+            int sum;
             foreach (var department in resultFinal)
             {
+                sum = 0;
                 foreach (var item in department)
                 {
                     sum++;
