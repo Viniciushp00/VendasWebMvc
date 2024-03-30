@@ -4,6 +4,7 @@ using SalesWebMvc.Models;
 using SalesWebMvc.Models.Enums;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using System.Diagnostics;
 
 namespace SalesWebMvc.Controllers
 {
@@ -26,9 +27,7 @@ namespace SalesWebMvc.Controllers
         public async Task<IActionResult> Create()
         {
             var listSellers = await _sellerService.FindAllAsync();
-            List<string> listSaleStatus = new List<string>();
-            foreach (string item in Enum.GetNames(typeof(SaleStatus))) listSaleStatus.Add(item);
-            var viewModel = new SalesFormViewModel { Sellers = listSellers, SaleStatus = listSaleStatus };
+            var viewModel = new SalesFormViewModel { Sellers = listSellers};
             return View(viewModel);
         }
 
@@ -81,6 +80,83 @@ namespace SalesWebMvc.Controllers
 
             var result = await _salesRecordService.FindByDateGroupingAsync(minDate, maxDate);
             return View(result);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+            }
+
+            var obj = await _salesRecordService.FindByIdAsync(id.Value);
+            if(obj == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+            return View(obj);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+            }
+
+            var obj = await _salesRecordService.FindByIdAsync(id.Value);
+            if (obj == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+
+            var sellers = await _sellerService.FindAllAsync();
+            List<string> listSaleStatus = new List<string>();
+
+            foreach (string item in Enum.GetNames(typeof(SaleStatus))) listSaleStatus.Add(item);
+            SalesFormViewModel viewModel = new SalesFormViewModel { Sale = obj,Sellers = sellers,SaleStatus = listSaleStatus };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, SalesRecord sale)
+        {
+            if (!ModelState.IsValid)
+            {
+                var sellers = await _sellerService.FindAllAsync();
+                List<string> listSaleStatus = new List<string>();
+
+                foreach (string item in Enum.GetNames(typeof(SaleStatus))) listSaleStatus.Add(item);
+                SalesFormViewModel viewModel = new SalesFormViewModel { Sale = sale, Sellers = sellers, SaleStatus = listSaleStatus };
+
+                return View(viewModel);
+            }
+            if (id != sale.Id)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
+            }
+            try
+            {
+                await _salesRecordService.UpdateAsync(sale);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ApplicationException ex)
+            {
+                return RedirectToAction(nameof(Error), new { message = ex.Message });
+            }
+        }
+
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
     }
 }

@@ -32,16 +32,10 @@
             <thead>
                 <tr class="success">
                     <th>
-                        @Html.DisplayNameFor(model => model.Id)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Date)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Seller)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Seller.Department)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Amount)
@@ -56,22 +50,21 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Date)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Seller.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Seller.Department.Name)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Chage Status</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>
                 }

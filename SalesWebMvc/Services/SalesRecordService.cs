@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
+using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Services
 {
@@ -99,6 +100,29 @@ namespace SalesWebMvc.Services
 
 
             return saleForDepartment.OrderByDescending(x => x.Value).FirstOrDefault();
+        }
+
+        public async Task<SalesRecord> FindByIdAsync(int id)
+        {
+            return await _context.SalesRecord.Include(x => x.Seller).Include(x => x.Seller.Department).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task UpdateAsync(SalesRecord sale)
+        {
+            bool hasAny = await _context.SalesRecord.AnyAsync(x => x.Id == sale.Id);
+            if (!hasAny)
+            {
+                throw new NotFoundException("Id not found");
+            }
+            try
+            {
+                _context.Update(sale);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateException ex)
+            {
+                throw new DbConcurrencyException(ex.Message);
+            }
         }
 
     }

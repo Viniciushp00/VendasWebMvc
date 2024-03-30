@@ -1,0 +1,49 @@
+﻿@model SalesWebMvc.Models.SalesRecord
+@{
+}
+<div>
+    <h4>Details Sale</h4>
+    <hr />
+    <dl class="d-block">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Seller.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Seller.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Seller.Department.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Seller.Department.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-danger">Back to list</a>
+</div>
